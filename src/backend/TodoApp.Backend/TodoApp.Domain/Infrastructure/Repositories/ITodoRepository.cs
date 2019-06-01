@@ -12,10 +12,12 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 
         Task<List<Todo>> FindAsync(Predicate<Todo> filter);
 
-        Task UpdateAsync(Todo entity);
+        Task<Todo> FirstAsync(Predicate<Todo> filter);
 
-        Task CreateAsync(Todo entity);
+        Task<Todo> UpdateAsync(Todo entity);
 
-        Task DeleteAsync(Todo entity);
+        Task<Todo> CreateAsync(Todo entity);
+
+        Task<bool> DeleteAsync(Todo entity);
     }
 }

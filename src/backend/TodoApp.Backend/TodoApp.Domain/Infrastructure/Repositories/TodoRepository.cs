@@ -8,12 +8,12 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 {
     public class TodoRepository : ITodoRepository
     {
-        public Task CreateAsync(Todo entity)
+        public Task<Todo> CreateAsync(Todo entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(Todo entity)
+        public Task<bool> DeleteAsync(Todo entity)
         {
             throw new NotImplementedException();
         }
@@ -28,7 +28,12 @@ namespace TodoApp.Domain.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task UpdateAsync(Todo entity)
+        public Task<Todo> FirstAsync(Predicate<Todo> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Todo> UpdateAsync(Todo entity)
         {
             throw new NotImplementedException();
         }
