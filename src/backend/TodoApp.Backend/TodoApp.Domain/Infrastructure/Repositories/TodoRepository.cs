@@ -21,6 +21,11 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 
         public async Task<Todo> CreateAsync(Todo entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             await _context.AddAsync(entity);
             await _context.SaveChangesAsync();
             _context.Entry(entity).State = EntityState.Detached;
@@ -30,6 +35,11 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(Todo entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             _context.Remove(entity);
             await _context.SaveChangesAsync();
 
@@ -44,6 +54,11 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 
         public async Task<List<Todo>> FindAsync(Expression<Func<Todo, bool>> filter)
         {
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
             IQueryable<Todo> query = _context.Todos.AsNoTracking();
             query.Where(filter);
 
@@ -52,12 +67,22 @@ namespace TodoApp.Domain.Infrastructure.Repositories
 
         public async Task<Todo> FirstAsync(Expression<Func<Todo, bool>> filter)
         {
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter));
+            }
+
             IQueryable<Todo> query = _context.Todos.AsNoTracking();
             return await query.FirstOrDefaultAsync(filter);
         }
 
         public async Task<Todo> UpdateAsync(Todo entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             _context.Update(entity);
             await _context.SaveChangesAsync();
 
