@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TodoApp.Domain.Models;
@@ -10,9 +11,9 @@ namespace TodoApp.Domain.Infrastructure.Repositories
     {
         Task<List<Todo>> FindAllAsync();
 
-        Task<List<Todo>> FindAsync(Predicate<Todo> filter);
+        Task<List<Todo>> FindAsync(Expression<Func<Todo, bool>> filter);
 
-        Task<Todo> FirstAsync(Predicate<Todo> filter);
+        Task<Todo> FirstAsync(Expression<Func<Todo, bool>> filter);
 
         Task<Todo> UpdateAsync(Todo entity);
 

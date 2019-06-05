@@ -1,41 +1,68 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TodoApp.Domain.Infrastructure.Data;
 using TodoApp.Domain.Models;
 
 namespace TodoApp.Domain.Infrastructure.Repositories
 {
     public class TodoRepository : ITodoRepository
     {
-        public Task<Todo> CreateAsync(Todo entity)
+        private Context _context;
+
+        public TodoRepository(Context context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> DeleteAsync(Todo entity)
+        public async Task<Todo> CreateAsync(Todo entity)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Detached;
+
+            return entity;
         }
 
-        public Task<List<Todo>> FindAllAsync()
+        public async Task<bool> DeleteAsync(Todo entity)
         {
-            throw new NotImplementedException();
+            _context.Remove(entity);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<List<Todo>> FindAsync(Predicate<Todo> filter)
+        public async Task<List<Todo>> FindAllAsync()
         {
-            throw new NotImplementedException();
+            IQueryable <Todo> query = _context.Todos.AsNoTracking();
+            return await query.ToListAsync();
         }
 
-        public Task<Todo> FirstAsync(Predicate<Todo> filter)
+        public async Task<List<Todo>> FindAsync(Expression<Func<Todo, bool>> filter)
         {
-            throw new NotImplementedException();
+            IQueryable<Todo> query = _context.Todos.AsNoTracking();
+            query.Where(filter);
+
+            return await query.ToListAsync();
         }
 
-        public Task<Todo> UpdateAsync(Todo entity)
+        public async Task<Todo> FirstAsync(Expression<Func<Todo, bool>> filter)
         {
-            throw new NotImplementedException();
+            IQueryable<Todo> query = _context.Todos.AsNoTracking();
+            return await query.FirstOrDefaultAsync(filter);
+        }
+
+        public async Task<Todo> UpdateAsync(Todo entity)
+        {
+            _context.Update(entity);
+            await _context.SaveChangesAsync();
+
+            _context.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
     }
 }
